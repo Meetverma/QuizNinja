@@ -1,0 +1,38 @@
+.quiz-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Take up the whole screen height */
+}
+
+.quiz-title {
+  font-size: 3rem; /* Increase font size */
+  margin-bottom: 2rem; /* Add some space below the title */
+  text-align: center; /* Center-align the title */
+}
+
+/* Add more styles as needed */
+
+  
+  .question {
+    margin-bottom: 20px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  input[type='radio'] {
+    margin-right: 5px;
+  }
+  
