@@ -24,7 +24,7 @@ const Home = () => {
         </span>
     </div>
 
-    <h2 className='m-10 text-3xl'>Explore Categories...</h2>
+    <h2 className='m-10 text-3xl'>Explore Categories...</h2>    
     <div className='flex justify-around m-15 '>
         <button className='bg-slate-200 rounded-full black p-10 hover:bg-slate-400'>Sports Quiz</button>
         <button className='bg-slate-200 rounded-full black p-10 hover:bg-slate-400'>Music Quiz</button>
