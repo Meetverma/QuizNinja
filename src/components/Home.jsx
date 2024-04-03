@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import { Typewriter } from 'react-simple-typewriter';
 import Quiz from '../Quiz'; // Import the Quiz component
 
 const Home = () => {
-  const [showQuiz, setShowQuiz] = useState(false);
-
-  const handleShowQuiz = () => {
-    setShowQuiz(true); // Set state to true when button is clicked
-  };
-
+  const allQuizes=['sportsquiz','businessquiz','algebraquiz','triviaquiz']
   return (
     <div>
       <Navbar />
-      {!showQuiz && ( // Conditionally render Home component if showQuiz is false
+
         <div className='bg-gray-700 h-96'>
           <h1 className='bold p-10 text-7xl bg-gradient-to-r from-indigo-400'>
             Welcome to QuizNinja
@@ -36,37 +32,15 @@ const Home = () => {
             />
           </span>
         </div>
-      )}
-
-      {!showQuiz && ( // Conditionally render Home component if showQuiz is false
-        <div>
-          <h2 className='m-10 text-3xl'>Explore Categories...</h2>
-          <div className='flex justify-around m-15'>
-            <button
-              className='bg-slate-200 rounded-full black p-10 hover:bg-slate-400'
-              onClick={handleShowQuiz}
-            >
-              Sports Quiz
-            </button>
-
-            <button
-              className='bg-slate-200 rounded-full black p-10 hover:bg-slate-400'
-              onClick={handleShowQuiz}
-            >
-              Music Quiz
-            </button>
-            <button
-              className='bg-slate-200 rounded-full black p-10 hover:bg-slate-400'
-              onClick={handleShowQuiz}
-            >
-              Geographic Quiz
-            </button>
-            
-          </div>
+        <div className='flex justify-center gap-10 mt-10'>
+          <h2 className='text-3xl place-self-center'>Explore top Quizzes</h2>
+        {allQuizes.map((quiz)=>(
+          <Link to={`/quiz/${quiz}`} className='p-5 bg-sky-500 hover:bg-sky-600 text-white rounded-full'>
+            Quiz: {quiz}
+          </Link>
+        ))}
         </div>
-      )}
 
-      {showQuiz && <Quiz />} {/* Render Quiz component if showQuiz is true */}
     </div>
   );
 };
