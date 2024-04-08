@@ -68,6 +68,67 @@ app.get('/quiz/sportsquiz', async (req, res) => {
   }
 });
 
+app.post('/login', async (req, res) => {
+  console.log("Login API hit")
+  const { email, password } = req.body;
+  const client = await MongoClient.connect(uri);
+  const db = client.db('QuizNinja');
+  try {
+    // Find user by email in the users collection
+    const user = await db.collection('users').findOne({ email });
+
+    // If user not found, return error
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    // Compare password with provided password
+    if (password !== user.password) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    // If passwords match, return success message
+    return res.status(200).json({ message: 'Login successful' });
+  } catch (error) {
+    console.error('Error logging in:', error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+});
+
+app.post('/register', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    // Validate name, email, and password
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Name, email, and password are required' });
+    }
+
+    // Connect to MongoDB
+    const client = await MongoClient.connect(uri);
+    const db = client.db('QuizNinja');
+
+    // Check if the user already exists
+    const existingUser = await db.collection('users').findOne({ email });
+
+    if (existingUser) {
+      await client.close();
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    // Insert new user into the database
+    await db.collection('users').insertOne({ name, email, password });
+
+    // Close the connection
+    await client.close();
+
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (error) {
+    console.error('Error registering user:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 
 // Start the server
 app.listen(port, () => {

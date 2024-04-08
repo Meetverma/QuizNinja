@@ -6,6 +6,9 @@ import SportsQuiz from './components/SportsQuiz.jsx'
 import './index.css'
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import QuizPage from './components/QuizPage.jsx'
+import Login from './components/Login.jsx'
+import Register from './components/Register.jsx'
+import { AuthProvider } from './components/AuthContext.jsx'
 const router= createBrowserRouter([
   {
     path:'/',
@@ -15,12 +18,22 @@ const router= createBrowserRouter([
   {
     path:'/quiz/:quizId',
     element: <QuizPage/>
+  },
+  {
+    path:'/login',
+    element: <Login/>
+  },
+  {
+    path:'/register',
+    element: <Register/>
   }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     {/* <App /> */}
-    <RouterProvider router={router}/>
+    <AuthProvider>
+      <RouterProvider router={router}/>
+    </AuthProvider>
   </React.StrictMode>,
 )
