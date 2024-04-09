@@ -2,28 +2,25 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-//import { useHistory } from 'react-router-dom';
-import { AuthContext } from './AuthContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+    setIsLoading(true);
+
     try {
       const response = await axios.post('http://localhost:3000/login', {
         email,
         password
       });
-  
-      if (response.status === 200) { // Check the status code directly
-        const userData = await response.json();
-        login(userData); // Set user data in context
+
+      if (response.status === 200) {
         toast.success('Login successful');
-        window.location.href = '/'; // Redirect to the homepage
+        window.location.href = `/${email}`;
       } else {
         const data = await response.data;
         toast.error(data.message);
@@ -31,10 +28,10 @@ const Login = () => {
     } catch (error) {
       console.error('Error logging in:', error);
       toast.error('Error logging in. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
-  
-
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -83,32 +80,22 @@ const Login = () => {
 
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-              />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                Remember me
-              </label>
+              
+              
             </div>
 
-            <div className="text-sm">
-              <Link to="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                Forgot your password?
-              </Link>
-            </div>
+           
           </div>
 
-          <div>
+          <div className="relative">
             <button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled={isLoading}
             >
               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                 <svg
-                  className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                  className={`h-5 w-5 text-indigo-500 group-hover:text-indigo-400 ${isLoading ? 'hidden' : ''}`}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -123,8 +110,21 @@ const Login = () => {
                     d="M4 8V6a4 4 0 118 0v2h.5a2.5 2.5 0 110 5H5.5a2.5 2.5 0 110-5H4zm6-2a2 2 0 100 4 2 2 0 000-4z"
                   />
                 </svg>
+                <svg
+                  className={`animate-spin h-5 w-5 text-white ${isLoading ? 'block' : 'hidden'}`}
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zm9 3.709A7.962 7.962 0 0112 20v-4c2.228 0 4.215-.935 5.657-2.443l-3-3.456zM20 12a8 8 0 01-8 8v4c3.042 0 5.824-1.135 7.938-3l-2.647-3zm-9-9.291l-3 2.647C5.135 6.824 4 4.042 4 1.909h4c0 2.208.895 4.208 2.343 5.657zM12 4c2.228 0 4 1.343 4 3s-1.772 3-4 3-4-1.343-4-3 1.772-3 4-3z"
+                  ></path>
+                </svg>
               </span>
-              Sign in
+              {isLoading ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
         </form>

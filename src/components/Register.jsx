@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { AuthContext } from './AuthContext';
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // State for loading animation
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Start loading animation
 
     try {
       const response = await axios.post('http://localhost:3000/register', {
@@ -18,17 +20,23 @@ const Register = () => {
         password
       });
 
-      if (response.ok) {
+
+      if (response.status === 200) { // Check the status code directly
         toast.success('Registration successful');
-        window.location.href = '/' // Redirect to the homepage
+        const responseData = await response.data;
+        if(responseData.succes)
+          {
+            window.location.href = `/${email}`;
       } else {
-        const data = await response.json();
+        const data = await response.data;
         toast.error(data.message);
       }
-    } catch (error) {
+    }} catch (error) {
       console.error('Error registering:', error);
       toast.error('Error registering. Please try again.');
     }
+
+    setIsLoading(false); // Stop loading animation
   };
 
   return (
@@ -97,6 +105,28 @@ const Register = () => {
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
+              {isLoading ? (
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A8.004 8.004 0 014.01 4.97L2.59 6.38A9.956 9.956 0 002 12c0 5.523 4.477 10 10 10v-4c-2.74 0-5.214-1.116-7.016-2.926z"
+                  ></path>
+                </svg>
+              ) : null}
               Create Account
             </button>
           </div>

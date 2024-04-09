@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Navbar from './Navbar';
+import Navbar2 from './Navbar2';
 import { Typewriter } from 'react-simple-typewriter';
 import Quiz from '../Quiz'; // Import the Quiz component
+
+function checkUser() {
+  const { userid } = useParams();
+  console.log("At home userid: ", userid)
+  if(userid == null) return false
+  else return true
+}
 
 const Home = () => {
   const allQuizes=['sportsquiz','businessquiz','algebraquiz','triviaquiz']
   return (
     <div>
-      <Navbar />
+      {checkUser() ? <Navbar2 /> : <Navbar />}
 
         <div className='bg-gray-700 h-96'>
           <h1 className='bold p-10 text-7xl bg-gradient-to-r from-indigo-400'>

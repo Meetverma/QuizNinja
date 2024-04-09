@@ -8,12 +8,19 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import QuizPage from './components/QuizPage.jsx'
 import Login from './components/Login.jsx'
 import Register from './components/Register.jsx'
+import Navbar2 from './components/Navbar2.jsx'
 import { AuthProvider } from './components/AuthContext.jsx'
+import UserProfile from './components/UserProfile.jsx'
 const router= createBrowserRouter([
   {
     path:'/',
     element: <App/>,
     errorElement:<NotFoundPage/>
+  },
+  {
+    path:'/:userid',
+    element: <App />,
+    errorElement: <NotFoundPage/>
   },
   {
     path:'/quiz/:quizId',
@@ -26,14 +33,16 @@ const router= createBrowserRouter([
   {
     path:'/register',
     element: <Register/>
+  },
+  {
+    path:'/user/:email',
+    element: <UserProfile/>
   }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     {/* <App /> */}
-    <AuthProvider>
       <RouterProvider router={router}/>
-    </AuthProvider>
   </React.StrictMode>,
 )

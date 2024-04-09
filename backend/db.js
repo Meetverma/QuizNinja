@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { application } from 'express';
 import { MongoClient } from 'mongodb';
 import cors from 'cors'
 
@@ -86,7 +86,7 @@ app.post('/login', async (req, res) => {
     if (password !== user.password) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
-
+    
     // If passwords match, return success message
     return res.status(200).json({ message: 'Login successful' });
   } catch (error) {
@@ -126,6 +126,29 @@ app.post('/register', async (req, res) => {
   } catch (error) {
     console.error('Error registering user:', error);
     res.status(500).json({ message: 'Server error' });
+  }
+});
+
+app.get('/user/:email', async (req, res) => {
+  const email = req.params.email;
+  console.log("user profile api hit")
+  console.log("Email: ", email)
+
+  const client = await MongoClient.connect(uri);
+  const db = client.db('QuizNinja');
+
+  try {
+    // Fetch user profile data from the database based on email
+    const userProfile = await db.collection('userprofile').findOne({ email });
+
+    if (!userProfile) {
+      return res.status(404).json({ message: 'User profile not found' });
+    }
+
+    res.json(userProfile);
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 

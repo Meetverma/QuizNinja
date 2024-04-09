@@ -1,14 +1,23 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { FaRegUser } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import { AuthContext } from './AuthContext'; // Import AuthContext
+import { useParams } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar2 = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { userid } = useParams(); // Get email from URL params
 
+  console.log("navbar 2 email params ", userid)
 
   const handleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLogout = () => {
+    window.location.href = '/'; // Navigate to '/'
+  };
+
+  const handleUserProfile = () => {
+    window.location.href = `/user/${userid}`; // Navigate to user profile with the email from params
   };
 
   return (
@@ -43,18 +52,15 @@ const Navbar = () => {
         </a>
       </div>
       <div className="sm:flex items-center">
-        
-          <>
-            {/* Login */}
-            <Link to="/login" className="text-white hover:text-gray-400 mx-10">
-              Login
-            </Link>
-            
-          </>
-        
+        {/* Logout button */}
+        <button onClick={handleLogout} className="text-white hover:text-gray-400 mx-10">
+          Logout
+        </button>
+        {/* User Logo */}
+        <FaRegUser onClick={handleUserProfile} className="text-white hover:text-gray-400 mr-5 cursor-pointer" />
       </div>
     </nav>
   );
 };
 
-export default Navbar;
+export default Navbar2;
