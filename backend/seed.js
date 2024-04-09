@@ -15,10 +15,11 @@ db.once("open", async () => {
   console.log("DATABASE CONNECTED SUCCESSFULLY");
 
   try {
-    seed()
+    // seed()
     console.log('Database seeded successfully!');
-    const d = await db.collections.findOne({title:"sportsquiz"})
-    console.log(d);
+    // const d = await db.collections.findOne({title:"sportsquiz"})
+    const qn = await db.collection('QuizNinja')
+    console.log(sq);
 
 
 
@@ -55,4 +56,3 @@ const seed = async () => {
     process.exit(1);
   }
 };
-

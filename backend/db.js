@@ -9,20 +9,41 @@ app.use(cors());
 const uri = "mongodb+srv://abhigyanchakraborty61:VYJAtIELhGjHkI9L@cluster0.4ixhrs5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // Middleware to parse JSON requests
+const quizLinks = [
+  '/quiz/sportsquiz',
+  '/quiz/businessquiz',
+  '/quiz/algebraquiz',
+  '/quiz/triviaquiz'
+];
+
 
 app.use(express.json());
 
 // Connect to MongoDB
-
+app.get('/random', async (req, res) => {
+  console.log("random api hit");
+  try {
+    // Generate a random index to select a quiz link
+    const randomIndex = Math.floor(Math.random() * quizLinks.length);
+    const randomQuizLink = quizLinks[randomIndex];
+    
+    // Redirect to the randomly selected quiz link
+    res.redirect(randomQuizLink);
+  } catch (error) {
+    console.error('Error redirecting to random quiz:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 // Endpoint to retrieve quiz data by title
-app.get('/quiz/sportsquiz', async (req, res) => {
+app.get('/quiz/:quizid', async (req, res) => {
+  const quizid = req.params.quizid
   const client = await MongoClient.connect(uri);
   const db = client.db('QuizNinja');
   console.log("Endpoint got hit");
   try {
     // Find the quiz data with the specified title
-    const quizdata = await db.collection('Quiz').findOne({ title: 'sportsquiz' });
+    const quizdata = await db.collection('Quiz').findOne({ title: quizid });
 
     if (!quizdata) {
       await client.close();

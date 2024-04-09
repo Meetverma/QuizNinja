@@ -21,12 +21,12 @@ const Quiz = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-lg">
-        <h1 className="text-3xl mb-4 font-bold text-center text-blue-600">Sports Quiz</h1>
+    <div className="min-h-screen flex justify-center items-center bg-gray-100 rounded-lg">
+      <div className="bg-white p-8 rounded shadow-lg rounded-lg">
+        <h1 className="text-3xl mb-4 font-bold text-center text-blue-600 rounded-lg">Sports Quiz</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Question 1: What sport is Cristiano Ronaldo famous for?</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-2 rounded-lg">Question 1: What sport is Cristiano Ronaldo famous for?</h3>
             <div className="space-y-2">
               <div>
                 <input type="radio" id="q1-football" name="q1" value="football" onChange={handleAnswerChange} />

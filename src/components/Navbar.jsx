@@ -5,7 +5,17 @@ import { AuthContext } from './AuthContext'; // Import AuthContext
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const quizLinks = [
+    '/quiz/sportsquiz',
+    '/quiz/businessquiz',
+    '/quiz/algebraquiz',
+    '/quiz/triviaquiz'
+  ];
+  const giveRandom= ()=>{
+    const randomIndex = Math.floor(Math.random() * quizLinks.length);
+    const randomQuizLink = quizLinks[randomIndex];
+    return randomQuizLink
+  }
 
   const handleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -24,28 +34,26 @@ const Navbar = () => {
         {isDropdownOpen && (
           <div className="absolute top-full left-0 bg-white p-2 shadow-md" style={{ width: '150px' }}>
             {/* Dropdown Items */}
-            <a href="#" className="block text-gray-800 hover:text-gray-600 my-2">
+            <Link to="quiz/sportsquiz" className="block text-gray-800 hover:text-gray-600 my-2">
               Sports Quiz
-            </a>
-            <a href="#" className="block text-gray-800 hover:text-gray-600 my-2">
-              Music Quiz
-            </a>
-            <a href="#" className="block text-gray-800 hover:text-gray-600 my-2">
-              Geopolitics Quiz
-            </a>
+            </Link>
+            <Link to="quiz/algebraquiz" className="block text-gray-800 hover:text-gray-600 my-2">
+              Algebra Quiz
+            </Link>
+            <Link to="quiz/triviaquiz" className="block text-gray-800 hover:text-gray-600 my-2">
+              Trivia Quiz
+            </Link>
           </div>
         )}
       </div>
       <div className="hidden space-x-4 sm:flex">
         {/* Category */}
-        <a href="#" className="text-white hover:text-gray-400">
+        <Link to={giveRandom()} className="text-white hover:text-gray-400">
           Random Quiz
-        </a>
+        </Link>
       </div>
       <div className="sm:flex items-center">
-        
           <>
-            {/* Login */}
             <Link to="/login" className="text-white hover:text-gray-400 mx-10">
               Login
             </Link>

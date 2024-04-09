@@ -11,6 +11,7 @@ import Register from './components/Register.jsx'
 import Navbar2 from './components/Navbar2.jsx'
 import { AuthProvider } from './components/AuthContext.jsx'
 import UserProfile from './components/UserProfile.jsx'
+import Loading from './components/Loading.jsx'
 const router= createBrowserRouter([
   {
     path:'/',
