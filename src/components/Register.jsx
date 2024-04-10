@@ -1,13 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { toast,ToastContainer } from 'react-toastify';
 
 const Register = () => {
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false); // State for loading animation
+  const [isLogin,setIsLogin] = useState(false);
+  
+
+  const toastme = (x)=>{
+    if(x){
+      toast.success('Login Successful', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+        setIsLogin(false);
+    }
+  }
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -22,10 +41,11 @@ const Register = () => {
 
 
       if (response.status === 200) { // Check the status code directly
-        toast.success('Registration successful');
+        toast.success('Regestered Successfully');
         const responseData = await response.data;
-        if(responseData.succes)
+        if(responseData)
           {
+            setIsLogin(true)
             window.location.href = `/${email}`;
       } else {
         const data = await response.data;
@@ -40,6 +60,19 @@ const Register = () => {
   };
 
   return (
+    <>
+    <ToastContainer
+position="top-right"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="colored"
+/>
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
@@ -104,6 +137,7 @@ const Register = () => {
             <button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+
             >
               {isLoading ? (
                 <svg
@@ -142,6 +176,7 @@ const Register = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
